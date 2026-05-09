@@ -54,14 +54,15 @@
                 <h3>ĐĂNG KÝ NHẬN ƯU ĐÃI 50%</h3>
                 <form id="leadForm">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Họ và tên của bạn *" required>
+                        <input type="text" name="fullname" class="form-control" placeholder="Họ và tên của bạn *"
+                            required>
                     </div>
                     <div class="form-group">
-                        <input type="tel" class="form-control" placeholder="Số điện thoại *" required
+                        <input type="tel" name="phone" class="form-control" placeholder="Số điện thoại *" required
                             pattern="[0-9]{10}">
                     </div>
                     <div class="form-group">
-                        <select class="form-control">
+                        <select name="status" class="form-control">
                             <option value="">Tình trạng răng hiện tại?</option>
                             <option value="Răng ố vàng, xỉn màu">Răng ố vàng, xỉn màu</option>
                             <option value="Răng thưa, sứt mẻ">Răng thưa, sứt mẻ</option>
@@ -294,9 +295,12 @@
                     <p>Hoạt động: Từ 08:00 đến 18:30 hàng ngày</p>
                     <p> (Tất cả các ngày trong tuần)</p>
                     <div class="footer-socials">
-                        <a href="https://www.facebook.com/nhakhoaquoctesmileup" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="https://www.youtube.com/@SmileUpLuxuryDental" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="https://www.tiktok.com/@ads.smileup" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/nhakhoaquoctesmileup" target="_blank"
+                            rel="noopener noreferrer"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.youtube.com/@SmileUpLuxuryDental" target="_blank"
+                            rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@ads.smileup" target="_blank" rel="noopener noreferrer"><i
+                                class="fa-brands fa-tiktok"></i></a>
                     </div>
                 </div>
             </div>
@@ -328,11 +332,38 @@
 
     <!-- Scripts -->
     <script>
-        // Form Submission
-        document.getElementById('leadForm').addEventListener('submit', function (e) {
+        // Form Submission gửi về Google Sheets
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzhhm01K85RegPBj9IJJcgpHQAXJufo5oeWyoRb7Fx8_luO-z62-f09bbzaqFZ9Yt8g/exec';
+        const form = document.getElementById('leadForm');
+
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            alert('Cảm ơn bạn đã đăng ký! Chuyên viên tư vấn sẽ liên hệ với bạn trong thời gian sớm nhất.');
-            this.reset();
+
+            // Đổi chữ nút bấm để thông báo đang gửi
+            const submitBtn = form.querySelector('button');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = 'ĐANG GỬI...';
+            submitBtn.disabled = true;
+
+            // Gửi dữ liệu bằng fetch với chế độ no-cors để tránh lỗi khi chạy từ file cục bộ
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: new FormData(form)
+            })
+                .then(response => {
+                    // Với no-cors, chúng ta không đọc được response, nhưng nếu không có lỗi catch thì coi như thành công
+                    alert('Cảm ơn bạn đã đăng ký! Chuyên viên tư vấn sẽ liên hệ với bạn trong thời gian sớm nhất.');
+                    form.reset();
+                    submitBtn.innerText = originalText;
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('Có lỗi xảy ra, vui lòng thử lại sau hoặc gọi hotline.');
+                    submitBtn.innerText = originalText;
+                    submitBtn.disabled = false;
+                });
         });
 
         // Countdown Timer Logic
