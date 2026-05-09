@@ -146,22 +146,19 @@ header {
 
 /* Hero Section */
 .hero {
-    position: relative;
-    height: 100vh; /* Takes full viewport height */
-    min-height: 550px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: url('https://w.ladicdn.com/s750x1050/5cba9b53c1b74d7597a07256/1-1-1-20250514032442-fdcub-1-1-20250630191606-ez_g1.jpg') no-repeat center center/cover;
-    color: #fff;
-    padding-top: 60px; /* Offset for header */
+    width: 100%;
+    line-height: 0;
+    padding: 0; /* Xóa khoảng trắng mặc định của section */
+}
+
+.hero-banner {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 62, 126, 0.65);
+    display: none;
 }
 
 .hero .container {
@@ -207,7 +204,7 @@ header {
 /* Register Section */
 .register-section {
     background: var(--bg-light);
-    padding: 50px 0;
+    padding: 20px 0 50px; /* Giảm padding-top để bám sát banner */
 }
 
 .hero-form {
@@ -255,14 +252,13 @@ section {
 }
 
 .section-title {
-    font-size: clamp(12px, 4vw, 26px); /* Responsive font-size */
-    margin-bottom: 25px;
+    font-size: clamp(24px, 5vw, 32px);
+    margin-bottom: 30px;
     text-transform: uppercase;
-    line-height: 1.4;
-    white-space: nowrap; /* Keep on one line */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if too long */
+    line-height: 1.3;
     width: 100%;
+    font-weight: 800;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Đổ bóng nhẹ cho chuyên nghiệp */
 }
 
 /* Problems Section */
